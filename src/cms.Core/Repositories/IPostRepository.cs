@@ -23,5 +23,8 @@ namespace cms.Core.Repositories
         Task<List<PostActivityLogDto>> GetActivityLogs(Guid id);
         Task<List<PostInListDto>> GetLatestPublishPost(int top);
         Task<PagedResult<PostInListDto>> GetPostByCategoryPaging(string categorySlug, int pageIndex = 1, int pageSize = 10);
+        Task<List<TagDto>> GetTagObjectsByPostId(Guid postId);
+
+        Task<PagedResult<PostInListDto>> GetPostByTagPaging(string tagSlug, int pageIndex = 1, int pageSize = 10);
     }
 }
