@@ -218,5 +218,55 @@ namespace cms.Data.Repositories
             post.Status = PostStatus.WaitingForApproval;
             _context.Posts.Update(post);
         }
+
+        public async Task<List<SeriesInListDto>> GetAllSeries(Guid postId)
+        {
+            var query = from pis in _context.PostInSeries
+                        join s in _context.Series
+                        on pis.SeriesId equals s.Id
+                        where pis.PostId == postId
+                        select s;
+            return await _mapper.ProjectTo<SeriesInListDto>(query).ToListAsync();
+        }
+
+        public async Task<List<PostActivityLogDto>> GetActivityLogs(Guid id)
+        {
+            var query = _context.PostActivityLogs.Where(x => x.PostId == id)
+                .OrderByDescending(x => x.DateCreated);
+            return await _mapper.ProjectTo<PostActivityLogDto>(query).ToListAsync();
+        }
+
+        public async Task<List<PostInListDto>> GetLatestPublishPost(int top)
+        {
+            var query = _context.Posts.Where(x => x.Status == PostStatus.Published)
+                .Take(top)
+                .OrderByDescending(x => x.DateCreated);
+
+            return await _mapper.ProjectTo<PostInListDto>(query).ToListAsync();
+        }
+
+        public async Task<PagedResult<PostInListDto>> GetPostByCategoryPaging(string categorySlug, int pageIndex = 1, int pageSize = 10)
+        {
+            var query = _context.Posts.AsQueryable();
+
+            if (!string.IsNullOrEmpty(categorySlug))
+            {
+                query = query.Where(x => x.CategorySlug == categorySlug);
+            }
+
+            var totalRow = await query.CountAsync();
+
+            query = query.OrderByDescending(x => x.DateCreated)
+               .Skip((pageIndex - 1) * pageSize)
+               .Take(pageSize);
+
+            return new PagedResult<PostInListDto>
+            {
+                Results = await _mapper.ProjectTo<PostInListDto>(query).ToListAsync(),
+                CurrentPage = pageIndex,
+                RowCount = totalRow,
+                PageSize = pageSize
+            };
+        }
     }
 }

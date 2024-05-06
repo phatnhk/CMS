@@ -396,5 +396,7 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
-**/wwwroot
-**/Migrations
+/src/cms.Api/wwwroot/media/**
+/src/cms.Data/Migrations/20240317040424_initDatabase.cs
+/src/cms.Data/Migrations/20240317040424_initDatabase.Designer.cs
+/src/cms.Data/Migrations/CMSDbContextModelSnapshot.cs

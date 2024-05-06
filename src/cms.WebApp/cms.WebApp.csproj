@@ -6,4 +6,9 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\cms.Core\cms.Core.csproj" />
+    <ProjectReference Include="..\cms.Data\cms.Data.csproj" />
+  </ItemGroup>
+
 </Project>

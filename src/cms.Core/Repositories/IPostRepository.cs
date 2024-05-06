@@ -19,5 +19,9 @@ namespace cms.Core.Repositories
         Task<List<string>> GetAllTags();
         Task AddTagToPost(Guid postId, Guid tagId);
         Task<List<string>> GetTagsByPostId(Guid postId);
+        Task<List<SeriesInListDto>> GetAllSeries(Guid postId);
+        Task<List<PostActivityLogDto>> GetActivityLogs(Guid id);
+        Task<List<PostInListDto>> GetLatestPublishPost(int top);
+        Task<PagedResult<PostInListDto>> GetPostByCategoryPaging(string categorySlug, int pageIndex = 1, int pageSize = 10);
     }
 }
